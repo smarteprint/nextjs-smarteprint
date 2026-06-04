@@ -2,8 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import SettingsManagement from "@/components/setupSelect/SettingsManagement";
 import SimpleAdminLogin from "@/components/setupSelect/SimpleAdminLogin";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+import api from "@/lib/api";
 
 export default function Page() {
     // ─── Admin auth state ─────────────────────────────────────────────
@@ -32,11 +31,9 @@ export default function Page() {
     // ─── Fetch settings on mount + poll every 10s ─────────────────────
     useEffect(() => {
         const fetchSettings = () => {
-            fetch(`${API_URL}/admin/header-visibility`)
-                .then(res => res.json())
-                .then(json => {
-                    // Unpack successResponse wrapper { success, message, data: {...} }
-                    const data = json.data || json;
+            api.get('/admin/header-visibility/')
+                .then(res => {
+                    const data = res.data;
                     setShowHeader(!!data.showHeader);
                     setShowLogo(!!data.showLogo);
                     setAllowModelSearch(data.allowModelSearch !== false);
@@ -58,27 +55,17 @@ export default function Page() {
     // ─── Login handler ────────────────────────────────────────────────
     const handleLogin = (username, password) => {
         setLoginError('');
-        fetch(`${API_URL}/admin/login-simple`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        })
-        .then(async res => {
-            const json = await res.json();
-            if (!res.ok) throw new Error(json?.message || 'Login failed.');
-            return json;
-        })
-        .then(json => {
-            // Unpack successResponse wrapper: { success, message, data: { token, ... } }
-            const data = json.data || json;
-            if (data.token) {
-                setAdminInfo(data);
-                localStorage.setItem('setupAdminInfo', JSON.stringify(data));
-            } else {
-                setLoginError('Invalid credentials.');
-            }
-        })
-        .catch(err => setLoginError(err?.message || 'Login failed.'));
+        api.post('/admin/login-simple/', { username, password })
+            .then(res => {
+                const data = res.data;
+                if (data.token) {
+                    setAdminInfo(data);
+                    localStorage.setItem('setupAdminInfo', JSON.stringify(data));
+                } else {
+                    setLoginError('Invalid credentials.');
+                }
+            })
+            .catch(err => setLoginError(err?.message || 'Login failed.'));
     };
 
     // ─── Centralized settings update (mirrors frontend App.jsx) ───────
@@ -97,26 +84,16 @@ export default function Page() {
         if (updatedFields.showInstallationFailed !== undefined) setShowInstallationFailed(updatedFields.showInstallationFailed);
         if (updatedFields.showCompleteSetup !== undefined) setShowCompleteSetup(updatedFields.showCompleteSetup);
 
-        fetch(`${API_URL}/admin/header-visibility`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                showHeader, showLogo, allowModelSearch,
-                showInstallationFailed, showCompleteSetup,
-                ...updatedFields  // override with the changed field
-            })
+        api.post('/admin/header-visibility/', {
+            showHeader, showLogo, allowModelSearch,
+            showInstallationFailed, showCompleteSetup,
+            ...updatedFields  // override with the changed field
+        }, {
+            headers: { 'Authorization': `Bearer ${token}` }
         })
-        .then(async res => {
-            const json = await res.json();
-            if (!res.ok) throw new Error(json?.message || 'Failed to update settings.');
-            return json;
-        })
-        .then(json => {
-            const data = json.data || json;
-            if (data.success) {
+        .then(res => {
+            const data = res.data;
+            if (data.success || data.message === "Settings updated") { // Note: interceptor unwraps successResponse, but just in case
                 setAdminStatus('Settings updated successfully.');
                 setTimeout(() => setAdminStatus(''), 3000);
             } else {

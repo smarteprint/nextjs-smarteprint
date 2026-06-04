@@ -3,17 +3,17 @@ import { Suspense, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import SetupHeader from '@/components/setupSelect/SetupHeader';
 
+import api from '@/lib/api';
+
 export default function SetupLayout({ children }) {
     const pathname = usePathname();
     const [showHeader, setShowHeader] = useState(false);
     const [showLogo, setShowLogo] = useState(false);
 
     useEffect(() => {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api';
-        fetch(`${apiUrl}/admin/header-visibility`)
-            .then(res => res.json())
-            .then(json => {
-                const data = json.data || json;
+        api.get('/admin/header-visibility/')
+            .then(res => {
+                const data = res.data;
                 setShowHeader(data.showHeader === true);
                 setShowLogo(data.showLogo === true);
             })

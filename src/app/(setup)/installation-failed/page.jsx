@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import InstallationFailedPage from "@/components/setupSelect/InstallationFailedPage";
 
+import api from '@/lib/api';
+
 export default function Page() {
     const router = useRouter();
     const [showInstallationFailed, setShowInstallationFailed] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api';
-        fetch(`${apiUrl}/admin/header-visibility`)
-            .then(res => res.json())
-            .then(json => {
-                const data = json.data || json;
+        api.get('/admin/header-visibility/')
+            .then(res => {
+                const data = res.data;
                 const isEnabled = data.showInstallationFailed !== false;
                 setShowInstallationFailed(isEnabled);
                 setIsLoading(false);

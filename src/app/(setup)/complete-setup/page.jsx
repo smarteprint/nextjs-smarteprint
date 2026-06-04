@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CompleteSetup from "@/components/setupSelect/CompleteSetup";
+import api from '@/lib/api';
 
 export default function Page() {
     const router = useRouter();
@@ -9,11 +10,9 @@ export default function Page() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api';
-        fetch(`${apiUrl}/admin/header-visibility`)
-            .then(res => res.json())
-            .then(json => {
-                const data = json.data || json;
+        api.get('/admin/header-visibility/')
+            .then(res => {
+                const data = res.data || res;
                 const isEnabled = data.showCompleteSetup !== false;
                 setShowCompleteSetup(isEnabled);
                 setIsLoading(false);
