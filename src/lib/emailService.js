@@ -6,41 +6,18 @@ const initializeTransporter = async () => {
   if (transporter) return transporter;
 
   try {
-    if (process.env.EMAIL_SERVICE === 'brevo' || process.env.EMAIL_HOST?.includes('brevo')) {
-      console.log('🔧 Configured for Brevo SMTP');
-      
-      transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST || 'smtp-relay.brevo.com',
-        port: parseInt(process.env.EMAIL_PORT) || 587,
-        secure: process.env.EMAIL_PORT == 465,
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
-        },
-        family: 4,
-        logger: false,
-        debug: false,
-        pool: false,
-        connectionTimeout: 30000,
-        greetingTimeout: 30000,
-        socketTimeout: 30000,
-        tls: {
-          rejectUnauthorized: false,
-          minVersion: 'TLSv1.2'
-        }
-      });
-    } else {
-      // Default Gmail or custom SMTP
-      transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: parseInt(process.env.EMAIL_PORT) || 587,
-        secure: process.env.EMAIL_SECURE === 'true',
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
-        }
-      });
-    }
+    transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: parseInt(process.env.EMAIL_PORT) || 465,
+      secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for other ports
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
 
     return transporter;
   } catch (error) {
@@ -94,7 +71,7 @@ export const sendOTPEmail = async (email, otp, type = 'registration') => {
     `;
 
     const result = await trans.sendMail({
-      from: `"SmartEPrint" <${process.env.EMAIL_FROM || 'noreply@smarteprint.com'}>`,
+      from: `"SmartEPrint" <${process.env.OTP_EMAIL_FROM || process.env.EMAIL_FROM || 'no-reply@smarteprint.com'}>`,
       to: email,
       subject,
       html
