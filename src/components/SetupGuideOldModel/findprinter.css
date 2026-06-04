@@ -1,0 +1,188 @@
+/* =======================
+   GLOBAL RESET
+======================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f9ff;
+}
+
+/* =======================
+   HERO SECTION
+======================= */
+.chat-assist-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 70px 20px;   /* Extra Top Height */
+}
+
+.chat-assist-text {
+    flex: 1;
+}
+
+.chat-assist-text h2 {
+    font-size: 2rem;
+    color: #0056b3;
+    margin-bottom: 20px;
+}
+
+.chat-assist-text p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.chat-assist-img {
+    flex: 1;
+    text-align: center;
+}
+
+.chat-assist-img img {
+    width: 100%;
+    max-width: 450px;
+    border-radius: 14px;
+    box-shadow: 0 25px 60px rgba(0, 86, 179, 0.18),
+                0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+}
+
+.chat-assist-img img:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 35px 80px rgba(0, 86, 179, 0.25),
+                0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* =======================
+   ACTION SECTION
+======================= */
+.chat-assist-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.chat-assist-action-left {
+    flex: 1;
+}
+
+.chat-assist-action-img {
+    flex: 1;
+    text-align: center;
+}
+
+.chat-assist-action-img img {
+    width: 100%;
+    max-width: 420px;
+}
+
+/* FORM */
+.printer-action-form {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.radio-group label {
+    font-size: 1rem;
+    color: #0056b3;
+    cursor: pointer;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.search-btn {
+    padding: 12px;
+    background: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.search-btn:hover {
+    background: #1976d2;
+}
+
+/* =======================
+   BOTTOM SECTION
+======================= */
+.chat-assist-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 80px 20px;
+}
+
+.chat-assist-bottom-left {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+/* =======================
+   RESPONSIVE DESIGN
+======================= */
+@media (max-width: 992px) {
+    .chat-assist-hero,
+    .chat-assist-action {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .chat-assist-hero {
+        padding: 80px 20px 50px 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .chat-assist-hero {
+        padding: 60px 15px 40px 15px;
+    }
+
+    .chat-assist-text h2 {
+        font-size: 1.4rem;
+    }
+
+    .chat-assist-text p,
+    .chat-assist-bottom-left {
+        font-size: 0.95rem;
+    }
+
+    .printer-action-form {
+        padding: 20px;
+    }
+}
