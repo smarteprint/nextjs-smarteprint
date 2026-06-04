@@ -18,7 +18,7 @@ export async function GET(request, { params }) {
       return errorResponse(authResult.message, authResult.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const order = await Order.findById(id).populate('user', 'name email');
 
     if (!order) {
@@ -58,7 +58,7 @@ export async function PUT(request, { params }) {
       return errorResponse(authResult.message, authResult.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { action } = body;
 
@@ -144,7 +144,7 @@ export async function DELETE(request, { params }) {
       return errorResponse(adminCheck.message, adminCheck.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const order = await Order.findByIdAndDelete(id);
 
     if (!order) {

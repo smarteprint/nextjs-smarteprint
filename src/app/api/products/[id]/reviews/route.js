@@ -19,7 +19,7 @@ export async function POST(request, { params }) {
       return errorResponse(authResult.message, authResult.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { rating, comment } = body;
 
@@ -72,7 +72,7 @@ export async function PUT(request, { params }) {
       return errorResponse(authResult.message, authResult.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { reviewId, rating, comment } = body;
 
@@ -135,7 +135,7 @@ export async function DELETE(request, { params }) {
       return errorResponse(authResult.message, authResult.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { reviewId } = body;
 

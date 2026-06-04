@@ -12,7 +12,7 @@ import User from '@/models/User';
 export async function GET(request, { params }) {
   try {
     await connectDB();
-    const { action } = params;
+    const { action } = await params;
     
     // GET profile - same as /api/auth
     if (action === 'profile') {
@@ -98,7 +98,7 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     await connectDB();
-    const { action } = params;
+    const { action } = await params;
 
     // UPDATE profile - same as /api/auth
     if (action === 'profile') {

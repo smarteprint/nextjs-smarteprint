@@ -420,23 +420,23 @@ const handleWriteReview = () => {
                     <div className="py-12 md:py-16">
                         {/* Overview Tab */}
                         {activeTab === "overview" && (
-                            <div className="max-w-4xl animate-fadeIn">
-                                <p className="text-slate-600 font-medium leading-relaxed text-base md:text-lg mb-8">
+                            <div className="max-w-5xl animate-fadeIn">
+                                <p className="text-slate-600 font-medium leading-relaxed text-base md:text-lg mb-8 break-words whitespace-pre-wrap">
                                     {product.description}
                                 </p>
                                 {product.overview && (
-                                    <div dangerouslySetInnerHTML={{ __html: product.overview }} className="prose prose-slate max-w-none text-slate-600 prose-sm md:prose-base" />
+                                    <div dangerouslySetInnerHTML={{ __html: product.overview }} className="prose prose-slate text-slate-600 prose-sm md:prose-base max-w-5xl overflow-hidden break-words whitespace-normal" />
                                 )}
                             </div>
                         )}
 
                         {/* Specifications Tab */}
                         {activeTab === "specifications" && (
-                            <div className="animate-fadeIn">
+                            <div className="max-w-5xl animate-fadeIn">
                                 {product.technicalSpecification ? (
-                                    <div dangerouslySetInnerHTML={{ __html: product.technicalSpecification }} className="prose prose-slate max-w-none text-slate-600 prose-sm md:prose-base" />
+                                    <div dangerouslySetInnerHTML={{ __html: product.technicalSpecification }} className="prose prose-slate text-slate-600 prose-sm md:prose-base max-w-5xl overflow-hidden break-words whitespace-normal" />
                                 ) : (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
                                         {[
                                             { label: 'Brand', value: product.brand },
                                             { label: 'Color', value: product.color },
@@ -448,7 +448,7 @@ const handleWriteReview = () => {
                                             item.value && (
                                                 <div key={item.label} className="p-4 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-2xl border border-slate-100 hover:shadow-md transition-all">
                                                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">{item.label}</span>
-                                                    <span className="font-bold text-slate-900 uppercase text-sm">{item.value}</span>
+                                                    <span className="font-bold text-slate-900 uppercase text-sm break-words">{item.value}</span>
                                                 </div>
                                             )
                                         ))}

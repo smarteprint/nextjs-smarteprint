@@ -16,7 +16,7 @@ export async function POST(request, { params }) {
       return errorResponse(authResult.message, authResult.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { message } = body;
 

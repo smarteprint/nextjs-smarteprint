@@ -21,7 +21,7 @@ export async function PUT(request, { params }) {
       return errorResponse(adminCheck.message, adminCheck.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const chat = await Chat.findById(id);
 
     if (!chat) {

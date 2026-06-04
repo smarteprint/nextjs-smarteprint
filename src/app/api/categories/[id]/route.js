@@ -12,7 +12,7 @@ export async function GET(request, { params }) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await params;
     const category = await Category.findById(id);
 
     if (!category) {
@@ -46,7 +46,7 @@ export async function PUT(request, { params }) {
       return errorResponse(adminCheck.message, adminCheck.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { name, slug, image, description } = body;
 
@@ -94,7 +94,7 @@ export async function DELETE(request, { params }) {
       return errorResponse(adminCheck.message, adminCheck.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const category = await Category.findByIdAndDelete(id);
 
     if (!category) {

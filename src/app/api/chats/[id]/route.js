@@ -18,7 +18,7 @@ export async function GET(request, { params }) {
       return errorResponse(authResult.message, authResult.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     
     // Special case: "my" returns user's chat
     if (id === 'my') {
@@ -81,7 +81,7 @@ export async function POST(request, { params }) {
       return errorResponse(authResult.message, authResult.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { message } = body;
 
@@ -152,7 +152,7 @@ export async function PUT(request, { params }) {
       return errorResponse(authResult.message, authResult.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { action } = body;
 

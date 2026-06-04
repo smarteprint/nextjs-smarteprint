@@ -3,6 +3,7 @@ import { connectDB } from '@/lib/mongodb';
 import { successResponse, errorResponse } from '@/lib/response';
 import { protectMiddleware, adminMiddleware } from '@/middleware/auth';
 import Product from '@/models/Product';
+import Category from '@/models/Category';
 import mongoose from 'mongoose';
 
 /**
@@ -12,7 +13,7 @@ import mongoose from 'mongoose';
 export async function GET(request, { params }) {
   try {
     await connectDB();
-    const { id } = params;
+    const { id } = await params;
 
     let product;
 
@@ -81,7 +82,7 @@ export async function PUT(request, { params }) {
       return errorResponse(adminCheck.message, adminCheck.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     const product = await Product.findById(id);
@@ -130,7 +131,7 @@ export async function DELETE(request, { params }) {
       return errorResponse(adminCheck.message, adminCheck.status);
     }
 
-    const { id } = params;
+    const { id } = await params;
     const product = await Product.findByIdAndDelete(id);
 
     if (!product) {
