@@ -2,37 +2,39 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaGear, FaPrint, FaCheck } from 'react-icons/fa6';
 
-const modelsearchinput = localStorage.getItem('modelSearchInput');
-
-const defaultSteps = [
-    {
-        label: 'Checking Device Compatibility',
-        right: 'Verified',
-        progress: 0,
-        status: '',
-    },
-    {
-        label: `Downloading Drivers for ${modelsearchinput || 'Printer'} `,
-        right: 'Completed (145 MB)',
-        progress: 0,
-        status: '',
-    },
-    {
-        label: 'Installing Package...',
-        right: 'Initializing Installation...',
-        progress: 0,
-        status: '',
-    }
-];
+function getDefaultSteps() {
+    const modelsearchinput = localStorage.getItem('modelSearchInput');
+    return [
+        {
+            label: 'Checking Device Compatibility',
+            right: 'Verified',
+            progress: 0,
+            status: '',
+        },
+        {
+            label: `Downloading Drivers for ${modelsearchinput || 'Printer'} `,
+            right: 'Completed (145 MB)',
+            progress: 0,
+            status: '',
+        },
+        {
+            label: 'Installing Package...',
+            right: 'Initializing Installation...',
+            progress: 0,
+            status: '',
+        }
+    ];
+}
 
 export default function SetupProgressModal({ open, onClose, printer = '', user = '', onError }) {
     const modalRef = useRef(null);
-    const [stepStates, setStepStates] = useState(defaultSteps);
+    const [stepStates, setStepStates] = useState(() => getDefaultSteps());
     const [activeStep, setActiveStep] = useState(0);
 
     useEffect(() => {
         if (!open) return;
-        setStepStates(defaultSteps);
+        const freshSteps = getDefaultSteps();
+        setStepStates(freshSteps);
         setActiveStep(0);
         let timers = [];
 
@@ -73,7 +75,7 @@ export default function SetupProgressModal({ open, onClose, printer = '', user =
                             i === idx ? { ...s, progress: 100, status: 'done' } : s
                         )
                     );
-                    if (idx < defaultSteps.length - 1) {
+                    if (idx < getDefaultSteps().length - 1) {
                         timers.push(setTimeout(() => animateStep(idx + 1), 500));
                     }
                 }
