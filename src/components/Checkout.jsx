@@ -102,7 +102,7 @@ const Checkout = () => {
 
             script.addEventListener('load', mountCloverElements, { once: true });
         }
-    }, [userInfo, cartItems, navigate, step]);
+    }, [userInfo, cartItems, router, step]);
 
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
     const taxPrice = 0;
@@ -117,7 +117,7 @@ const Checkout = () => {
             try {
                 setLoading(true);
                 const { data } = await api.post(
-                    `/shipping/rates`,
+                    `/shipping`,
                     { address, city, postalCode, country, state: province, phone, cartItems }
                 );
                 
@@ -311,7 +311,7 @@ const Checkout = () => {
                                                 required 
                                                 className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#EF4056] focus:border-transparent outline-none transition-all font-medium text-slate-700 max-h-48 overflow-y-auto"
                                             >
-                                                <option value="" disabled selected>Select your country</option>
+                                                <option value="" disabled>Select your country</option>
                                                 <option value="US">United States</option>
                                                 <option value="CA">Canada</option>
                                                 <option value="AF">Afghanistan</option>

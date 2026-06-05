@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 
 let transporter = null;
-
+let supportTransporter = null;
 const initializeTransporter = async () => {
   if (transporter) return transporter;
 
@@ -86,27 +86,40 @@ export const sendOTPEmail = async (email, otp, type = 'registration') => {
   }
 };
 
-export const sendContactEmail = async (name, email, subject, message) => {
-  try {
-    const trans = await initializeTransporter();
+const initializeSupportTransporter = async () => {
+  if (supportTransporter) return supportTransporter;
 
-    const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h2 style="color: #333;">New Contact Form Submission</h2>
-        <p><strong>From:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
-        <hr />
-        <p><strong>Message:</strong></p>
-        <p style="white-space: pre-wrap;">${message}</p>
-      </div>
-    `;
+  try {
+    supportTransporter = nodemailer.createTransport({
+      host: 'mail.smarteprint.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'support@smarteprint.com',
+        pass: process.env.Form_email_password
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+
+    return supportTransporter;
+  } catch (error) {
+    console.error('❌ Failed to initialize support transporter:', error);
+    throw error;
+  }
+};
+
+export const sendEmail = async ({ to, subject, html, text, from, replyTo }) => {
+  try {
+    const trans = await initializeSupportTransporter();
 
     const result = await trans.sendMail({
-      from: `"SmartEPrint Contact" <${process.env.EMAIL_FROM || 'noreply@smarteprint.com'}>`,
-      to: process.env.CONTACT_EMAIL || process.env.EMAIL_USER,
-      replyTo: email,
-      subject: `Contact Form: ${subject}`,
+      from: from || `"SmartEPrint Support" <support@smarteprint.com>`,
+      to,
+      replyTo,
+      subject,
+      text,
       html
     });
 
