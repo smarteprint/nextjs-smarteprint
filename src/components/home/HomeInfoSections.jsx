@@ -17,7 +17,7 @@ const HomeInfoSections = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-md">
               <p className="text-gray-700 text-sm sm:text-base lg:text-lg leading-relaxed">
-                <strong>16904599 CANADA INC, DBA Prints Basket</strong>, based in Kitchener, Ontario, Canada, operates as an independent online retailer focused exclusively on printers and related equipment for home, office, and professional use.
+                <strong>Smart ePrint</strong>, based in Kitchener, Ontario, Canada, operates as an independent online retailer focused exclusively on printers and related equipment for home, office, and professional use.
               </p>
             </div>
 

@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import QuillEditor from '../common/QuillEditor';
 import {
     Plus, Search, Trash2, Edit, X, Save,
     Image as ImageIcon, Tag, Hash, DollarSign,
@@ -681,8 +680,7 @@ const AdminProducts = () => {
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Highlights (Rich Text)</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                                        <ReactQuill
-                                            theme="snow"
+                                        <QuillEditor
                                             value={formData.shortDetails}
                                             onChange={(val) => handleQuillChange('shortDetails', val)}
                                             modules={quillModules}
@@ -692,8 +690,7 @@ const AdminProducts = () => {
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Full Narrative Overview</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                                        <ReactQuill
-                                            theme="snow"
+                                        <QuillEditor
                                             value={formData.overview}
                                             onChange={(val) => handleQuillChange('overview', val)}
                                             modules={quillModules}
@@ -714,8 +711,7 @@ const AdminProducts = () => {
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Keywords</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                                        <ReactQuill
-                                            theme="snow"
+                                        <QuillEditor
                                             value={formData.shortSpecification}
                                             onChange={(val) => handleQuillChange('shortSpecification', val)}
                                             modules={quillModules}
@@ -746,8 +742,7 @@ const AdminProducts = () => {
 
                                     {specType === 'text' ? (
                                         <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                                            <ReactQuill
-                                                theme="snow"
+                                            <QuillEditor
                                                 value={formData.technicalSpecification}
                                                 onChange={(val) => handleQuillChange('technicalSpecification', val)}
                                                 modules={quillModules}

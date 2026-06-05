@@ -107,12 +107,12 @@ ${message}
       await sendEmail({
         to:
           process.env.CONTACT_RECEIVER_EMAIL ||
-          'support@printsbasket.com',
+          'support@smarteprint.com',
         subject,
         html,
         text,
         from: `"${fromName}" <${
-          process.env.EMAIL_FROM || 'support@printsbasket.com'
+          process.env.EMAIL_FROM || 'support@smarteprint.com'
         }>`,
         replyTo: replyToEmail,
       });

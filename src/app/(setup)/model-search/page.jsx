@@ -1,21 +1,15 @@
-"use client";
-import { useEffect, useState } from "react";
-import ModelSearch from "@/components/setupSelect/ModelSearch";
-import api from '@/lib/api';
+import ModelSearchPage from './ModelSearchClient';
 
-export default function ModelSearchPage() {
-    const [allowModelSearch, setAllowModelSearch] = useState(true);
+export const metadata = {
+    title: "Complete 123.hp.com/setup Steps | HP Printer Setup, Offline Fix & Troubleshooting",
+    description: "Visit 123.hp.com/setup for HP printer setup help, fix HP printer offline issues, and troubleshoot HP printer errors with step-by-step guidance. Get help from HP certified technician.",
+    robots: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+    icons: {
+        icon: "/favicon.png",
+    },
+    canonical: "https://www.smarteprint.com/model-search",
+};
 
-    useEffect(() => {
-        api.get('/admin/header-visibility/')
-            .then(res => {
-                const data = res.data;
-                if (data.allowModelSearch === false) {
-                    setAllowModelSearch(false);
-                }
-            })
-            .catch(err => console.error("Error fetching settings:", err));
-    }, []);
-
-    return <ModelSearch allowModelSearch={allowModelSearch} />;
+export default function Page() {
+    return <ModelSearchPage />;
 }

@@ -24,7 +24,7 @@ const ContactMain = () => {
     <section className="w-full bg-gray-50">
       <SEO
           title="Contact Us"
-          description="Get in touch with PrintsBasket. We're here to help with your printer and printing supply needs. Email, phone, or send us a message."
+          description="Get in touch with Smart ePrint. We're here to help with your printer and printing supply needs. Email, phone, or send us a message."
           canonical="/contact-us"
       />
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16">

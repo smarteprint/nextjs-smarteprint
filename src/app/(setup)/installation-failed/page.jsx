@@ -1,34 +1,15 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import InstallationFailedPage from "@/components/setupSelect/InstallationFailedPage";
+import InstallationFailedPageComponent from './InstallationFailedClient';
 
-import api from '@/lib/api';
+export const metadata = {
+    title: "Complete 123.hp.com/setup Steps | HP Printer Setup, Offline Fix & Troubleshooting",
+    description: "Visit 123.hp.com/setup for HP printer setup help, fix HP printer offline issues, and troubleshoot HP printer errors with step-by-step guidance. Get help from HP certified technician.",
+    robots: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+    icons: {
+        icon: "/favicon.png",
+    },
+    canonical: "https://www.smarteprint.com/installation-failed",
+};
 
 export default function Page() {
-    const router = useRouter();
-    const [showInstallationFailed, setShowInstallationFailed] = useState(true);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        api.get('/admin/header-visibility/')
-            .then(res => {
-                const data = res.data;
-                const isEnabled = data.showInstallationFailed !== false;
-                setShowInstallationFailed(isEnabled);
-                setIsLoading(false);
-                if (!isEnabled) {
-                    router.replace('/step-by-step-setup-guide/');
-                }
-            })
-            .catch(err => {
-                console.error("Error fetching settings:", err);
-                setIsLoading(false);
-            });
-    }, [router]);
-
-    if (isLoading) return null;
-    if (!showInstallationFailed) return null;
-
-    return <InstallationFailedPage showInstallationFailed={showInstallationFailed} />;
+    return <InstallationFailedPageComponent />;
 }

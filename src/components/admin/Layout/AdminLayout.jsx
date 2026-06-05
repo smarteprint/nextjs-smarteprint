@@ -22,7 +22,7 @@ import {
     Shield
 } from 'lucide-react';
 
-const AdminLayout = () => {
+const AdminLayout = ({ children }) => {
     const router = useRouter();
     const location = { pathname: usePathname() };
     const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const AdminLayout = () => {
         if (!userInfo || !userInfo.isAdmin) {
             router.push('/admin/login');
         }
-    }, [userInfo, navigate]);
+    }, [userInfo, router]);
 
     // Time State
     const [currentTime, setCurrentTime] = useState(new Date());
@@ -292,7 +292,7 @@ const AdminLayout = () => {
 
                 {/* Main Content Area */}
                 <main className="flex-1 overflow-y-auto p-4 md:p-8 relative">
-                    <Outlet />
+                    {children}
                 </main>
             </div>
 
