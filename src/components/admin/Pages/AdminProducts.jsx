@@ -999,10 +999,10 @@ const AdminProducts = () => {
                                                 <div className="flex items-center gap-6">
                                                     <div className="w-20 h-20 bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm flex-shrink-0 flex items-center justify-center p-2 group-hover:scale-105 transition-transform rotate-1 group-hover:rotate-0">
                                                         <img
-                                                            src={p.images?.[0] ? (p.images[0].startsWith('http') ? p.images[0] : `${process.env.NEXT_PUBLIC_API_URL.replace('/api', '')}${p.images[0]}`) : '/printer.png'}
+                                                            src={p.images?.[0] ? (p.images[0].startsWith('http') ? p.images[0] : `${process.env.NEXT_PUBLIC_API_URL.replace('/api', '')}${p.images[0]}`) : '/assets/printer.png'}
                                                             alt=""
                                                             className="w-full h-full object-contain"
-                                                            onError={(e) => e.target.src = '/printer.png'}
+                                                            onError={(e) => e.target.src = '/assets/printer.png'}
                                                         />
                                                     </div>
                                                     <div>
