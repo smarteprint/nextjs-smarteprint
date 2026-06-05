@@ -159,6 +159,7 @@ export const createProduct = (productData) => async (dispatch, getState) => {
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
+                'Content-Type': 'multipart/form-data',
             },
         };
 
@@ -188,6 +189,7 @@ export const updateProduct = (id, productData) => async (dispatch, getState) => 
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
+                'Content-Type': 'multipart/form-data',
             },
         };
 

@@ -4,6 +4,7 @@ import { successResponse, errorResponse } from '@/lib/response';
 import { protectMiddleware, adminMiddleware } from '@/middleware/auth';
 import Product from '@/models/Product';
 import Category from '@/models/Category';
+import { uploadToCloudinary } from '@/lib/cloudinary';
 
 /**
  * GET /api/products
@@ -132,7 +133,34 @@ export async function POST(request) {
       return errorResponse(adminCheck.message, adminCheck.status);
     }
 
-    const body = await request.json();
+    // Parse FormData
+    const formData = await request.formData();
+    
+    // Convert FormData to object
+    const body = {};
+    const files = [];
+    
+    for (const [key, value] of formData.entries()) {
+      if (value instanceof File && value.name) {
+        files.push(value);
+      } else if (key !== 'images' || !(value instanceof File)) {
+        body[key] = value;
+      }
+    }
+
+    // Helper to parse array fields
+    const parseArrayField = (field) => {
+      if (!field) return [];
+      if (typeof field === 'string') {
+        try {
+          return JSON.parse(field);
+        } catch {
+          return field.split(',').map(v => v.trim()).filter(Boolean);
+        }
+      }
+      return field;
+    };
+
     const {
       title,
       brand,
@@ -150,12 +178,12 @@ export async function POST(request) {
       height,
       depth,
       screenSize,
-      images,
       technology,
       usageCategory,
       allInOneType,
       wireless,
       mainFunction,
+      reviews
     } = body;
 
     if (!title || !price || !category) {
@@ -170,6 +198,23 @@ export async function POST(request) {
       .toLowerCase()
       .replace(/[^a-z0-9\s]/g, '')
       .replace(/\s+/g, '-');
+
+    // Handle Images
+    let currentImages = [];
+    if (body.existingImages) {
+        currentImages = typeof body.existingImages === 'string' ? JSON.parse(body.existingImages) : body.existingImages;
+    } else if (body.images) {
+        currentImages = typeof body.images === 'string' ? JSON.parse(body.images) : body.images;
+    }
+
+    if (files.length > 0) {
+        const uploadPromises = files.map(async (file) => {
+            const buffer = Buffer.from(await file.arrayBuffer());
+            return uploadToCloudinary(buffer, file.name);
+        });
+        const newImageUrls = await Promise.all(uploadPromises);
+        currentImages = [...currentImages, ...newImageUrls];
+    }
 
     const product = await Product.create({
       title,
@@ -188,14 +233,14 @@ export async function POST(request) {
       height: height || '',
       depth: depth || '',
       screenSize: screenSize || '',
-      images: images || [],
+      images: currentImages,
       slug,
-      technology: technology || '',
-      usageCategory: usageCategory || [],
-      allInOneType: allInOneType || '',
+      technology: parseArrayField(technology),
+      usageCategory: parseArrayField(usageCategory),
+      allInOneType: parseArrayField(allInOneType),
       wireless: wireless || '',
-      mainFunction: mainFunction || [],
-      reviews: [],
+      mainFunction: parseArrayField(mainFunction),
+      reviews: parseArrayField(reviews),
     });
 
     return successResponse(product, 'Product created successfully', 201);

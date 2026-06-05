@@ -4,6 +4,7 @@ import { successResponse, errorResponse } from '@/lib/response';
 import { protectMiddleware, adminMiddleware } from '@/middleware/auth';
 import Product from '@/models/Product';
 import Category from '@/models/Category';
+import { uploadToCloudinary } from '@/lib/cloudinary';
 import mongoose from 'mongoose';
 
 /**
@@ -83,7 +84,21 @@ export async function PUT(request, { params }) {
     }
 
     const { id } = await params;
-    const body = await request.json();
+    
+    // Parse FormData
+    const formData = await request.formData();
+    
+    // Convert FormData to object
+    const body = {};
+    const files = [];
+    
+    for (const [key, value] of formData.entries()) {
+      if (value instanceof File && value.name) {
+        files.push(value);
+      } else if (key !== 'images' || !(value instanceof File)) {
+        body[key] = value;
+      }
+    }
 
     const product = await Product.findById(id);
 
@@ -91,12 +106,48 @@ export async function PUT(request, { params }) {
       return errorResponse('Product not found', 404);
     }
 
+    // Helper to parse array fields
+    const parseArrayField = (field) => {
+      if (!field) return [];
+      if (typeof field === 'string') {
+        try {
+          return JSON.parse(field);
+        } catch {
+          return field.split(',').map(v => v.trim()).filter(Boolean);
+        }
+      }
+      return field;
+    };
+
     // Update fields
     Object.keys(body).forEach((key) => {
-      if (key !== '_id') {
-        product[key] = body[key];
+      if (key !== '_id' && key !== 'images' && key !== 'existingImages') {
+        if (['technology', 'usageCategory', 'allInOneType', 'mainFunction', 'reviews'].includes(key)) {
+          product[key] = parseArrayField(body[key]);
+        } else {
+          product[key] = body[key];
+        }
       }
     });
+    
+    // Handle Images
+    let currentImages = [];
+    if (body.existingImages) {
+        currentImages = typeof body.existingImages === 'string' ? JSON.parse(body.existingImages) : body.existingImages;
+    } else {
+        currentImages = product.images || [];
+    }
+
+    if (files.length > 0) {
+        const uploadPromises = files.map(async (file) => {
+            const buffer = Buffer.from(await file.arrayBuffer());
+            return uploadToCloudinary(buffer, file.name);
+        });
+        const newImageUrls = await Promise.all(uploadPromises);
+        product.images = [...currentImages, ...newImageUrls];
+    } else {
+        product.images = currentImages;
+    }
 
     const updatedProduct = await product.save();
 

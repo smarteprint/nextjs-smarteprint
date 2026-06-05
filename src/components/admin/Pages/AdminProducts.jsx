@@ -296,6 +296,7 @@ const AdminProducts = () => {
         }
 
         // Add form fields
+        const ARRAY_FORM_FIELDS = ['technology', 'usageCategory', 'allInOneType', 'mainFunction'];
         Object.keys(formData).forEach(key => {
             if (key === 'images') {
                 data.append('existingImages', JSON.stringify(formData.images));
@@ -303,6 +304,13 @@ const AdminProducts = () => {
                 data.append('reviews', JSON.stringify(formData.reviews));
             } else if (key === 'technicalSpecification') {
                 data.append('technicalSpecification', finalTechSpecs);
+            } else if (ARRAY_FORM_FIELDS.includes(key)) {
+                // Serialize arrays as JSON strings so the backend parseArrayField() can decode them
+                data.append(key, JSON.stringify(Array.isArray(formData[key]) ? formData[key] : []));
+            } else if (key === 'wireless') {
+                if (formData.wireless !== '') {
+                    data.append('wireless', formData.wireless);
+                }
             } else {
                 data.append(key, formData[key]);
             }
