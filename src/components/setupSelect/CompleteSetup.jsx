@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { redirect } from 'next/navigation';
 
@@ -12,6 +13,8 @@ function CompleteSetup({ showCompleteSetup }) {
     redirect('/step-by-step-setup-guide/');
     return null;
   }
+  const pathname = usePathname() || '/complete-setup/';
+  const canonicalUrl = `https://www.smarteprint.com${pathname}`;
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '');
@@ -28,6 +31,8 @@ function CompleteSetup({ showCompleteSetup }) {
       <Helmet>
         <title>Complete 123.hp.com/setup Steps | HP Printer Setup, Offline Fix & Troubleshooting</title>
         <meta name="description" content="Visit 123.hp.com/setup for HP printer setup help, fix HP printer offline issues, and troubleshoot HP printer errors with step-by-step guidance. Get help from HP certified technician." />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:url" content={canonicalUrl} />
         <link rel="preload" as="image" href="/hero_background_image.webp" fetchPriority="high" />
       </Helmet>
       <div className="w-full min-h-screen bg-white flex flex-col">

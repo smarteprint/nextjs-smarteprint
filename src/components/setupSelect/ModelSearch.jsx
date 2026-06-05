@@ -1,12 +1,15 @@
 "use client";
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { redirect } from 'next/navigation';
 
 import { isBot } from '../../lib/botUtils';
 
 const ModelSearch = ({ allowModelSearch }) => {
+    const pathname = usePathname() || '/model-search/';
+    const canonicalUrl = `https://www.smarteprint.com${pathname}`;
 
     const [input, setInput] = useState("");
     const [error, setError] = useState("");
@@ -32,6 +35,8 @@ const ModelSearch = ({ allowModelSearch }) => {
             <Helmet>
                 <title>Complete 123.hp.com/setup Steps | HP Printer Setup, Offline Fix & Troubleshooting</title>
                 <meta name="description" content="Visit 123.hp.com/setup for HP printer setup help, fix HP printer offline issues, and troubleshoot HP printer errors with step-by-step guidance. Get help from HP certified technician." />
+                <link rel="canonical" href={canonicalUrl} />
+                <meta property="og:url" content={canonicalUrl} />
                 <link rel="preload" as="image" href="/hero_background_image.webp" fetchPriority="high" />
                 <link rel="preload" as="image" href="/printer-without-bg.png" fetchPriority="high" />
             </Helmet>

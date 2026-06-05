@@ -68,7 +68,7 @@ export async function POST(request) {
 
       // Create From Address (Company Location)
       const fromAddress = await client.Address.create({
-        company: 'SmartEPrint',
+        company: 'Smart ePrint',
         street1: process.env.COMPANY_ADDRESS || '95 Broadacre Dr',
         city: process.env.COMPANY_CITY || 'Kitchener',
         state: process.env.COMPANY_STATE || 'ON',
@@ -201,7 +201,7 @@ function getFallbackShippingRates(cartItems) {
   return {
     rates: [
       {
-        carrier: 'SmartEPrint Standard',
+        carrier: 'Smart ePrint Standard',
         service: 'USPS Priority Mail',
         rate: parseFloat(standardRate.toFixed(2)),
         currency: 'USD',
@@ -209,7 +209,7 @@ function getFallbackShippingRates(cartItems) {
         deliveryDays: '3-5 business days'
       },
       {
-        carrier: 'SmartEPrint Express',
+        carrier: 'Smart ePrint Express',
         service: 'USPS Express Mail',
         rate: parseFloat(expressRate.toFixed(2)),
         currency: 'USD',
@@ -217,7 +217,7 @@ function getFallbackShippingRates(cartItems) {
         deliveryDays: '1-2 business days'
       },
       {
-        carrier: 'SmartEPrint Overnight',
+        carrier: 'Smart ePrint Overnight',
         service: 'FedEx Overnight',
         rate: parseFloat(overnightRate.toFixed(2)),
         currency: 'USD',

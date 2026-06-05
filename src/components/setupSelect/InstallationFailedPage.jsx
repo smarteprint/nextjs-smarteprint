@@ -17,8 +17,8 @@ export default function InstallationFailedPage({ showInstallationFailed }) {
     return (
         <>
             <Helmet>
-                <title>Complete 123.hp.com/setup Steps | HP Printer Setup, Offline Fix & Troubleshooting</title>
-                <meta name="description" content="Visit 123.hp.com/setup for HP printer setup help, fix HP printer offline issues, and troubleshoot HP printer errors with step-by-step guidance. Get help from HP certified technician." />
+                <title>Printer Driver Installation Error | Smart ePrint</title>
+                <meta name="robots" content="noindex, nofollow" />
             </Helmet>
             <div
                 className="md:min-h-[91vh] min-h-screen flex flex-col justify-center items-center bg-cover bg-center px-2"
